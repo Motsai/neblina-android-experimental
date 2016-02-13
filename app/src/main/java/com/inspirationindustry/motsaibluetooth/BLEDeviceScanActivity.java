@@ -10,52 +10,43 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestActivity2 extends ListActivity {
+import butterknife.OnClick;
+
+public class BLEDeviceScanActivity extends ListActivity {
 
     private static final int REQUEST_ENABLE_BT = 0;
     private BluetoothAdapter mBluetoothAdapter;
-
-    private boolean mScanning;
-    private Handler mHandler; //careful there might be another Handler
-//    private List<BluetoothDevice> deviceList;
-//    private ArrayAdapter<BluetoothDevice> mLeDeviceListAdapter;
-    private List<String> deviceList;
+    private Handler mHandler;
+    private List<String> mDeviceNameList;
     private ArrayAdapter<String> mLeDeviceListAdapter;
+    private static final long SCAN_PERIOD = 60000;
+    private List<BluetoothDevice> mDeviceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
         activateBLE();
-        Log.w("BLUETOOTH DEBUG", "ACTIVATE BLE COMPLETE!");
-        //SETUP THE ADAPTER WITH BLUETOOTHDEVICE type
-//        deviceList = new ArrayList<BluetoothDevice>();
-//        mLeDeviceListAdapter = new ArrayAdapter<BluetoothDevice>(
-//                this, android.R.layout.simple_list_item_1,deviceList); //We need to implement this
-//        setListAdapter(mLeDeviceListAdapter);
+        Log.w("BLUETOOTH DEBUG", "BLE was activated");
 
         //Try without bluetooth device type but still lists
-        deviceList = new ArrayList<String>();
+        mDeviceNameList = new ArrayList<String>();
+        mDeviceList = new ArrayList<BluetoothDevice>();
         mLeDeviceListAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,deviceList);
-        mLeDeviceListAdapter.add("Device1");
-        mLeDeviceListAdapter.add("Device2");
+                android.R.layout.simple_list_item_1, mDeviceNameList);
         setListAdapter(mLeDeviceListAdapter);
 
-        //scanLeDevice(true);
+        scanLeDevice(true);
 
-        //Team Treehouse Basic Adapter that works
-//        String[] listStrings = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_1,listStrings);
-//        setListAdapter(adapter);
     }
+
 
     public void activateBLE() {
 
@@ -75,27 +66,29 @@ public class TestActivity2 extends ListActivity {
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }}
+        }
+    }
 
-        private static final long SCAN_PERIOD = 10000;
 
     private void scanLeDevice(final boolean enable) {
-        if(enable){
+        if (enable) {
             //stops scanning after a pre-defined period
+            mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mScanning = false;
+                    Log.w("BLUETOOTH DEBUG", "ending the scan!");
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
             }, SCAN_PERIOD);
-            mScanning = true;
+            Log.w("BLUETOOTH DEBUG", "starting the scan!");
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
-            mScanning = false;
+            Log.w("BLUETOOTH DEBUG", "ending the scan!");
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
     }
+
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback(){
@@ -104,18 +97,31 @@ public class TestActivity2 extends ListActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.w("BLUETOOTH DEBUG","YOU FOUND SOMETHING!");
-                            mLeDeviceListAdapter.add(device.getName());
+                            Log.w("BLUETOOTH DEBUG", "YOU FOUND SOMETHING!");
+                            mLeDeviceListAdapter.add(device.getName().toString());
+                            mDeviceList.add(device);
                             mLeDeviceListAdapter.notifyDataSetChanged();
                         }
                     });
                 }
             };
+
+    @OnClick(R.id.refreshButton)
+    public void refreshActivity(View view){
+
+        //start a new scan
+        //should we stop the old scan first? It didn't seem to crash when I pressed it at least.
+        scanLeDevice(true);
+    }
+
+
 }
 
 
 
-//ARRAY EXPERIMENTS AND NOTES
+
+
+//ARRAY/LIST/ADAPTER EXPERIMENTS AND NOTES
 //1. Using ArrayLists + an ArrayAdapter
 //List<String> where = new ArrayList<String>();
 //where.add( "item1");
@@ -145,3 +151,12 @@ public class TestActivity2 extends ListActivity {
 //There is a special activity class called List Activity
 //ListActivity class needs your ListView ID to be "@android:id/list"
 //ListActivity has a special Empty View with ID "@android:id/empty
+
+//Here is a basic adapter that works
+//        String[] daysOfTheWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1,daysOfTheWeek);
+//        setListAdapter(adapter);
+//
+// NOTES: Basically I used the treehouse method, except it needed a List<> instead of
+// an array so that you can add devices on the fly as they are detected

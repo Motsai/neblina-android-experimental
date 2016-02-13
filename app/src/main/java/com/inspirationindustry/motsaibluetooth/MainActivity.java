@@ -2,7 +2,7 @@ package com.inspirationindustry.motsaibluetooth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     @Override
@@ -42,23 +42,13 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Refresh button shortcut
-//    @OnClick(R.id.refreshButton)
-//    public void refreshButton(View view){
-//        scanLeDevice(true);
-//    }
-
 
     //Butterknife shortcut to calling an intent instead of creating an onClick listener.
     @OnClick(R.id.nextButton)
     public void startDailyActivity(View view){
 
-        //What I actually want
-//        Intent intent = new Intent(this,DeviceScanActivity.class);
-//       startActivity(intent);
-
         //This definitely works
-        Intent intent = new Intent(this,TestActivity2.class);
+        Intent intent = new Intent(this,BLEDeviceScanActivity.class);
         startActivity(intent);
     }
 }
