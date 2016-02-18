@@ -27,11 +27,34 @@
         <activity android:name=".BLEDeviceScanActivity">
         </activity>
 
-        <service
-            android:name=".BluetoothLeService"
+        <receiver
+            android:name=".GattBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
-        </service>
+
+            <intent-filter>
+                <action android:name="com.inspirationindustry.motsaibluetooth.ACTION_GATT_CONNECTED">
+                </action>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.inspirationindustry.motsaibluetooth.ACTION_GATT_DISCONNECTED">
+                </action>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.inspirationindustry.motsaibluetooth.ACTION_GATT_SERVICES_DISCOVERED">
+                </action>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.inspirationindustry.motsaibluetooth.ACTION_DATA_AVAILABLE">
+                </action>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.inspirationindustry.motsaibluetooth.EXTRA_DATA">
+                </action>
+            </intent-filter>
+
+
+        </receiver>
     </application>
 
 </manifest>
