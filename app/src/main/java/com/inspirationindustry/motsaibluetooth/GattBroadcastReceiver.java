@@ -37,8 +37,12 @@ public class GattBroadcastReceiver extends BroadcastReceiver {
             // user interface.
 //                displayGattServices(mBluetoothLeService.getSupportedGattServices());//commenting out so it compiles
         } else if (BLEDeviceScanActivity.ACTION_DATA_AVAILABLE.equals(action)) {
-//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));//commenting out so it compiles
+                displayData(intent.getStringExtra(BLEDeviceScanActivity.EXTRA_DATA));//commenting out so it compiles
             Log.w("BLUETOOTH DEBUG", "The intent action is ACTION_DATA_AVAILABLE");
         }
+    }
+
+    private void displayData(String stringExtra) {
+        Log.w("BLUETOOTH DEBUG", "Displaying the Data");
     }
 }
