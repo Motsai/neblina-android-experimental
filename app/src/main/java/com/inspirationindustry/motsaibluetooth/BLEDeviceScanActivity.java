@@ -228,38 +228,60 @@ public class BLEDeviceScanActivity extends ListActivity {
         final Intent intent = new Intent(action);
         Log.w("BLUETOOTH DEBUG", "You are in LONG form of onBroadcastUpdate");
 
-            final byte[] data = characteristic.getValue();
+        final byte[] data = characteristic.getValue();
 
-            if (data != null && data.length > 0) {
-                final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
-                    stringBuilder.append(String.format("%02X ", byteChar));
+        if (data != null && data.length > 0) {
+            final StringBuilder stringBuilder = new StringBuilder(data.length);
+            for (byte byteChar : data)
+                stringBuilder.append(String.format("%02X ", byteChar));
 
-                Log.w("BLUETOOTH DEBUG", "Hex (length=" + data.length + "): " + stringBuilder.toString());
-                intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
-                        stringBuilder.toString());
-            }
+            Log.w("BLUETOOTH DEBUG", "Hex (length=" + data.length + "): " + stringBuilder.toString());
+            intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
+                    stringBuilder.toString());
+        }
 
-        if(data.length==20) {
-            final byte[] header = Arrays.copyOfRange(data, 0, 3 + 1);
-            final byte[] timestamp = Arrays.copyOfRange(data, 4, 7 + 1);
-            final byte[] q0 = Arrays.copyOfRange(data, 8, 9 + 1);
-            final byte[] q1 = Arrays.copyOfRange(data, 10, 11 + 1);
-            final byte[] q2 = Arrays.copyOfRange(data, 12, 13+ 1);
-            final byte[] q3 = Arrays.copyOfRange(data, 14, 15 + 1);
-            final byte[] reserved = Arrays.copyOfRange(data, 16, 19 + 1);
+        //Unwrap Data Based on Motsai's Neblina Protocol
+        if (data.length == 20) {
+            //Plus 1 is to remind me that the end of the range is non-inclusive
+            final byte[] header = Arrays.copyOfRange(data, 0, 3 + 1); //Bytes 0-3 are the header
+            final byte[] timestamp = Arrays.copyOfRange(data, 4, 7 + 1); //Bytes 4-7 are the timestamp
+            final byte[] q0 = Arrays.copyOfRange(data, 8, 9 + 1); // Bytes 8-9 are Q0 value
+            final byte[] q1 = Arrays.copyOfRange(data, 10, 11 + 1); // Bytes 10-11 are Q1 value
+            final byte[] q2 = Arrays.copyOfRange(data, 12, 13 + 1); // Bytes 12-13 are Q2 value
+            final byte[] q3 = Arrays.copyOfRange(data, 14, 15 + 1); // Bytes 12-15 are Q3 value
+            final byte[] reserved = Arrays.copyOfRange(data, 16, 19 + 1); // Bytes 16-19 are reserved
+
+            //Convert to big endian
+            float Q0 = normalizedQ(q0);
+            float Q1 = normalizedQ(q1);
+            float Q2 = normalizedQ(q2);
+            float Q3 = normalizedQ(q3);
+
+            Log.w("BLUETOOTH DEBUG", "Q0: " + Q0);
+            Log.w("BLUETOOTH DEBUG", "Q1: " + Q1);
+            Log.w("BLUETOOTH DEBUG", "Q2: " + Q2);
+            Log.w("BLUETOOTH DEBUG", "Q3: " + Q3);
 
             byte b = q0[0];
             q0[0] = q0[1];
             q0[1] = b;
-            Log.w("BLUETOOTH DEBUG", "Q0 value:" + q0);
+            int val = ((q0[0]&0xff)<<8)|(q0[1]&0xff);
+            Log.w("BLUETOOTH DEBUG", "Q0 value int:" + val);
+            float normalized_q0 = (float) val / 32768;
+            Log.w("BLUETOOTH DEBUG", "Q0 value normalized:" + normalized_q0);
+
+            sendBroadcast(intent);
         }
-
-
-
-        sendBroadcast(intent);
     }
 
+    private float normalizedQ(byte[] q) {
+        if(q.length==2){
+            int val = ((q[1]&0xff)<<8)|(q[0]&0xff); //concatenate the byte array into an int
+            float normalized = (float) val / 32768; //normalize by dividing by 2^15
+            if (normalized > 1.0) normalized = normalized-2;
+            return normalized;
+        }else return -1;
+    }
 
     // Handles various events fired by the Service.
 // ACTION_GATT_CONNECTED: connected to a GATT server.
