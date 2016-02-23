@@ -13,4 +13,9 @@
     <string name="title_devices">title_devices</string>
     <string name="error_bluetooth_not_supported">bluetooth_not_supported</string>
     <string name="emptyText">Cool it\'s empty</string>
+
+    <string name="title_activity_open_glvisualization">OpenGLVisualizationActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_open_gl">OpenGlActivity</string>
 </resources>
