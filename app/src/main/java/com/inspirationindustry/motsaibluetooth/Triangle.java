@@ -20,16 +20,41 @@ public class Triangle {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
-    static float triangleCoords[] = {   // in counterclockwise order:
-            0.0f,  0.622008459f, 0.0f, // top
-            -0.5f, -0.311004243f, 0.0f, // bottom left
-            0.5f, -0.311004243f, 0.5f  // bottom right
+    static float[] triangleCoords = {
+            0,0,0,
+            0,0,0,
+            0,0,0
     };
 
-    // Set color with red, green, blue and alpha (opacity) values
-    float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
+    //static declaration for original triangle
+//    {   // in counterclockwise order:
+//            0.0f,  0.622008459f, 0.0f, // top
+//            -0.5f, -0.311004243f, 0.0f, // bottom left
+//            0.5f, -0.311004243f, 0.1f  // bottom right
+//    };
 
-    public Triangle() {
+    // Set color with red, green, blue and alpha (opacity) values
+    float color[] = {0,0,0,0};
+    public Triangle(float ax, float ay, float az,
+                    float bx, float by, float bz,
+                    float cx, float cy, float cz,
+                    float color_r,  float color_g,  float color_b, float color_a) {
+
+        color[0] = color_r;
+        color[1] = color_g;
+        color[2] = color_b;
+        color[3] = color_a;
+
+        triangleCoords[0] = ax;
+        triangleCoords[1] = ay;
+        triangleCoords[2] = az;
+        triangleCoords[3] = bx;
+        triangleCoords[4] = by;
+        triangleCoords[5] = bz;
+        triangleCoords[6] = cx;
+        triangleCoords[7] = cy;
+        triangleCoords[8] = cz;
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)

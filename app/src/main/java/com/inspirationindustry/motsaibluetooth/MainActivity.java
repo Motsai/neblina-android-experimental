@@ -12,7 +12,6 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Butterknife shortcut to calling an intent instead of creating an onClick listener.
     @OnClick(R.id.nextButton)
-    public void startDailyActivity(View view){
+    public void nameIsInconsequential(View view){
 
         //This definitely works
         Intent intent = new Intent(this,BLEDeviceScanActivity.class);

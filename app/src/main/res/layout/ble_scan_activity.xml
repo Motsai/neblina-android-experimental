@@ -17,7 +17,7 @@
         android:id="@android:id/list"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView"
-        android:layout_above="@+id/linearLayout"/>
+   />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,44 +36,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Refresh"
+        android:id="@+id/refreshButton"
         android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quaternion1"
-            android:id="@+id/textView2"
-            android:layout_weight="1"
-            tools:text="Quaternion1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView3"
-            android:layout_weight="1"
-            tools:text="Quaternion2"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView4"
-            android:layout_weight="1"
-            tools:text="Quaternion3"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView5"
-            android:layout_weight="1"
-            tools:text="Quaternion4"/>
-    </LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>
