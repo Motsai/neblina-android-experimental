@@ -13,6 +13,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
+    //The 12 Rectangles of our cube
     private Triangle mTriangle1;
     private Triangle mTriangle2;
     private Triangle mTriangle3;
@@ -26,18 +27,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle11;
     private Triangle mTriangle12;
 
-//    private Square mSquare;
     private final float[] mMVPMatrix = new float[16];
     private final float[]  mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private float[] mRotationMatrix = new float[16];
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
+        //Background Color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+        //These three lines make the closest shapes appear on top (as is logical)
         GLES20.glClearDepthf(1.0f);
         GLES20.glDepthFunc(GLES20.GL_LESS);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
+        //Define the 12 triangles of our cube
         //Front Face - Android Green
         mTriangle1 = new Triangle(
                 -0.5f,   0.5f,   0.5f,
@@ -127,16 +131,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 0.5f, -0.5f, 0.5f,
                 0.0f, 0.6666f, 0.6666f, 1.0f
         );
-
-
-
-        //static declaration for original triangle
-//    {   // in counterclockwise order:
-//            0.0f,  0.622008459f, 0.0f, // top
-//            -0.5f, -0.311004243f, 0.0f, // bottom left
-//            0.5f, -0.311004243f, 0.1f  // bottom right
-//    };
-//        mSquare = new Square();
     }
 
     public void onDrawFrame(GL10 unused){
@@ -154,9 +148,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //Tutorial ROTATION matrix
         long time = SystemClock.uptimeMillis() % 4000L;
         float angle = 0.090f * ((int)time);
-        Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 1.0f, 0);
+        Matrix.setRotateM(mRotationMatrix, 0, angle, angle/3, angle/5, angle/10);
 
-
+//TODO: Try this q code now that the eye has been fixed and the cube is in place
 
 //        float q1 = BLEDeviceScanActivity.latest_Q0;
 //        float q2 = BLEDeviceScanActivity.latest_Q1;
@@ -165,7 +159,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 //        Matrix.setRotateM(mRotationMatrix,0,q1,q2,q3,q4);
 
-//
+// TODO: If that doesn't work, dig a bit deeper into the math of the rotation matrixes and the q value calculations
 //        Math.atan2();
 //
 //        Matrix.setRotateM(mRotationMatrix, 0);
@@ -195,10 +189,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle10.draw(scratch);
         mTriangle11.draw(scratch);
         mTriangle12.draw(scratch);
-
-
-        //played around with this for a while...  it only drew half the square (i.e. the first triangle)
-
     }
 
     public void onSurfaceChanged(GL10 unused, int width, int height){
