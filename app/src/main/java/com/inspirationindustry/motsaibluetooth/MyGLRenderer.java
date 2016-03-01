@@ -34,8 +34,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES20.glClearDepthf(1.0f);
+        GLES20.glDepthFunc(GLES20.GL_LESS);
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
-        //Front Face
+        //Front Face - Android Green
         mTriangle1 = new Triangle(
                 -0.5f,   0.5f,   0.5f,
                 -0.5f,   0.5f,  -0.5f,
@@ -50,75 +53,79 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 0.63671875f, 0.76953125f, 0.22265625f, 1.0f
         );
 
-        //Bottom Face
+        //Bottom Face - Light Blue
         mTriangle3 = new Triangle(
-                0.5f, 0.5f, 0.5f,
+                -0.5f, -0.5f, -0.5f,
                 -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.5f, -0.5f, -0.5f,
+                0.3333f, 0.3333f, 1.0f, 1.0f
         );
 
         mTriangle4 = new Triangle(
-                0.5f, 0.5f, 0.5f,
                 -0.5f, 0.5f, -0.5f,
                 0.5f, 0.5f, -0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.5f, -0.5f, -0.5f,
+                0.3333f, 0.3333f, 1.0f, 1.0f
         );
 
+        //Left Face - Gold
         mTriangle5 = new Triangle(
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, 0.5f,  0.5f,
                 -0.5f, -0.5f, -0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                1.0f, 0.6666f, 0.0f, 1.0f
         );
 
         mTriangle6 = new Triangle(
                 -0.5f, 0.5f, 0.5f,
                 -0.5f, 0.5f, -0.5f,
                 -0.5f, -0.5f, -0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                1.0f, 0.6666f, 0.0f, 1.0f
         );
 
+        //Right Face - Red
         mTriangle7 = new Triangle(
+                0.5f, -0.5f, 0.5f,
                 0.5f, 0.5f, 0.5f,
                 0.5f, 0.5f, -0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.6666f, 0.0f, 0.0f, 1.0f
         );
 
         mTriangle8 = new Triangle(
-                0.5f, 0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
                 0.5f, -0.5f, 0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.5f, -0.5f, -0.5f,
+                0.5f, 0.5f, -0.5f,
+                0.6666f, 0.0f, 0.0f, 1.0f
         );
 
+        //Back Face - Dark Blue
         mTriangle9 = new Triangle(
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, -0.5f, -0.5f,
                 0.5f, -0.5f, 0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.0f, 0.0f, 0.6666f, 1.0f
         );
 
         mTriangle10 = new Triangle(
                 0.5f, -0.5f, 0.5f,
                 -0.5f, -0.5f, -0.5f,
                 0.5f, -0.5f, -0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.0f, 0.0f, 0.6666f, 1.0f
         );
 
+        //Top Face - Teal
         mTriangle11 = new Triangle(
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, 0.5f, 0.5f,
                 0.5f, 0.5f, 0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.0f, 0.6666f, 0.6666f, 1.0f
         );
 
         mTriangle12 = new Triangle(
                 -0.5f, -0.5f, 0.5f,
                 0.5f, 0.5f, 0.5f,
                 0.5f, -0.5f, 0.5f,
-                0.63671875f, 0.76953125f, 0.22265625f, 1.0f
+                0.0f, 0.6666f, 0.6666f, 1.0f
         );
 
 
@@ -138,7 +145,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
         //Set the camera position (View Matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         //Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
@@ -147,7 +154,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //Tutorial ROTATION matrix
         long time = SystemClock.uptimeMillis() % 4000L;
         float angle = 0.090f * ((int)time);
-        Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 0, -1.0f);
+        Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 1.0f, 0);
 
 
 
@@ -188,6 +195,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle10.draw(scratch);
         mTriangle11.draw(scratch);
         mTriangle12.draw(scratch);
+
 
         //played around with this for a while...  it only drew half the square (i.e. the first triangle)
 
