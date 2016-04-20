@@ -32,5 +32,10 @@
     </style>
 
 
+    <style name="WhiteFont" parent="@android:style/Widget.ListView">
+        <item name="android:textColor">#FFFF</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
 
 </resources>

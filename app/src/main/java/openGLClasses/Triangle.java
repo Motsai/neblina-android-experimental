@@ -26,13 +26,6 @@ public class Triangle {
             0,0,0
     };
 
-    //static declaration for original triangle
-//    {   // in counterclockwise order:
-//            0.0f,  0.622008459f, 0.0f, // top
-//            -0.5f, -0.311004243f, 0.0f, // bottom left
-//            0.5f, -0.311004243f, 0.1f  // bottom right
-//    };
-
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = {0,0,0,0};
     public Triangle(float ax, float ay, float az,

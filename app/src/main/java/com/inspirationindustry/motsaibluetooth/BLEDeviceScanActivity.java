@@ -102,7 +102,7 @@ public class BLEDeviceScanActivity extends ListActivity {
         mDeviceNameList = new ArrayList<String>();
         mDeviceList = new ArrayList<BluetoothDevice>();
         mLeDeviceListAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mDeviceNameList);
+                R.layout.list_item_text, mDeviceNameList);
         setListAdapter(mLeDeviceListAdapter);
     }
 
