@@ -9,19 +9,4 @@
                 android:background="@drawable/bg_gradient"
                 tools:context=".MainActivity">
 
-    <TextView
-        android:text="Device List"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listTextView"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/nextButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
-
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.inspirationindustry.motsaibluetooth;
+package openGLClasses;
 
 import android.opengl.GLES20;
 

@@ -1,4 +1,4 @@
-package com.inspirationindustry.motsaibluetooth;
+package openGLClasses;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;

@@ -1,9 +1,11 @@
-package com.inspirationindustry.motsaibluetooth;
+package openGLClasses;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
+
+import com.inspirationindustry.motsaibluetooth.BLEDeviceScanActivity;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -31,9 +33,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[]  mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private float[] mRotationMatrix = new float[16];
-    private float[] rotate2 = new float[16];
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
+
         //Background Color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -128,52 +130,35 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         mTriangle12 = new Triangle(
-//                0.5f,0.0f,0.5f,
-//                0.25f,0.25f,0.5f,
-//                0.25f,-0.25f,0.5f,
-                
                   0.0f, -0.5f, 0.5f,
                   0.25f,-0.25f,0.5f,
                   -0.25f,-0.25f,0.5f,
-
-//                -0.5f, -0.5f, 0.5f,
-//                0.5f, 0.5f, 0.5f,
-//                0.5f, -0.5f, 0.5f,
                 0.0f, 0.6666f, 0.6666f, 1.0f
         );
     }
 
     public void onDrawFrame(GL10 unused){
         float[] scratch = new float[16];
-        float[] temp = new float[16];
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
         //Set the camera position (View Matrix)
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 5, 0f, 0f, 0f, 0f, -1.0f, 0.0f);
 
         //Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-//        mSquare.draw(mMVPMatrix);
 
         //Tutorial ROTATION matrix
         long time = SystemClock.uptimeMillis() % 4000L;
         float angle = 0.090f * ((int)time);
-//        Matrix.setRotateM(mRotationMatrix, 0, angle, angle/3, angle/5, angle/10); //Use this for demo rotations
-
-//TODO: Try this q code now that the eye has been fixed and the cube is in place
 
         float q1 = BLEDeviceScanActivity.latest_Q0;
         float q2 = BLEDeviceScanActivity.latest_Q1;
         float q3 = BLEDeviceScanActivity.latest_Q2;
         float q4 = BLEDeviceScanActivity.latest_Q3;
 
-//            Matrix.setRotateM(mRotationMatrix, 0, q1 * 360, q2, q3, q4); //This version looks good, but not perfect
-
-
-        //Try arccos(q1);
-        //Try 2*arcos(q1);
-        //Try equation from the paper
+        //Equation from Omid's paper with conversions to make the math work
         double pi_d = Math.PI;
         float pi_f = (float)pi_d;
 
@@ -193,30 +178,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         double rz_double = -1 * q4_double / Math.sin(theta_double/2);
         float rz = (float)rz_double;
 
-        Matrix.setRotateM(mRotationMatrix,0,theta,rx,-ry,rz);
-
-
-// TODO: If that doesn't work, dig a bit deeper into the math of the rotation matrixes and the q value calculations
-//        Math.atan2();
-//
-//        Matrix.setRotateM(mRotationMatrix, 0);
-
-
-//        float qMatrix[] = {
-//                2*q1*q1 - 1 + 2*q2*q2,   2*(q2*q3 + q1*q4),       2* (q2*q4 - q1*q3),      0,
-//                2*(q2*q3 - q1*q4),       -1 + 2*q1*q1 + 2*q3*q3,  2*(q3*q4 + q1*q2),       0,
-//                2*(q2*q4 + q1*q3),       2*(q3*q4 - q1*q2),       2*q1*q1 - 1 + 2*q4*q4,   0,
-//                0,                       0,                       0,                       1
-//        } ;
+        //Rotate the matrix
+        Matrix.setRotateM(mRotationMatrix, 0, theta, rx, -ry, rz);
 
         //Combine rotation matrix with the projection and camera view
-        Matrix.multiplyMM(temp, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-        Matrix.setRotateEulerM(rotate2, 0, 0, 0, 90);
-        Matrix.multiplyMM(scratch,0,temp,0,rotate2,0);
+        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
         //Draw shape
-        //TODO: Draw a cube made out of 12 Triangles
         mTriangle1.draw(scratch);
         mTriangle2.draw(scratch);
         mTriangle3.draw(scratch);
@@ -245,6 +213,4 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glCompileShader(shader);
         return shader;
     }
-
-
 }
