@@ -48,19 +48,23 @@ public class Triangle {
         triangleCoords[7] = cy;
         triangleCoords[8] = cz;
 
+//        Triangle coords -> Into GPU
+        //GPU uses C code, so this byte buffer is needed to tell the system to store the data
+//        in a native format...
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)
                 triangleCoords.length * 4);
         // use the device hardware's native byte order
         bb.order(ByteOrder.nativeOrder());
-
         // create a floating point buffer from the ByteBuffer
         vertexBuffer = bb.asFloatBuffer();
         // add the coordinates to the FloatBuffer
         vertexBuffer.put(triangleCoords);
         // set the buffer to read the first coordinate
         vertexBuffer.position(0);
+
+
 
         int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,vertexShaderCode);
 

@@ -143,8 +143,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
+        //Position the EYE
+        // Position the eye behind the origin.
+        final float eyeX = 0.0f;
+        final float eyeY = 0.0f;
+        final float eyeZ = 5.0f;
+
+        // We are looking toward the distance
+        final float lookX = 0.0f;
+        final float lookY = 0.0f;
+        final float lookZ = 0.0f;
+
+        // Set our up vector. This is where our head would be pointing were we holding the camera.
+        final float upX = 0.0f;
+        final float upY = -1.0f;
+        final float upZ = 0.0f;
+
         //Set the camera position (View Matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 5, 0f, 0f, 0f, 0f, -1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
         //Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
