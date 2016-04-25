@@ -62,7 +62,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".VisualizationActivity"
+        <activity android:name="openGL2Classes.VisualizationActivity"
                   android:screenOrientation="portrait">
         </activity>
     </application>

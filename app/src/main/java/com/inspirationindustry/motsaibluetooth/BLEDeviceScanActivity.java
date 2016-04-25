@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import openGL2Classes.VisualizationActivity;
 
 public class BLEDeviceScanActivity extends ListActivity {
 
@@ -157,7 +158,7 @@ public class BLEDeviceScanActivity extends ListActivity {
         String clicked_device = device.getName();
         Toast.makeText(this, "Connecting to " + clicked_device, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this,VisualizationActivity.class);
+        Intent intent = new Intent(this, VisualizationActivity.class);
         startActivity(intent);
     }
 

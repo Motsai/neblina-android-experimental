@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     compile files('libs/lwjgl-2.9.3/lwjgl-2.9.3/jar/lwjgl.jar')
     compile files('libs/lwjgl-2.9.3/lwjgl-2.9.3/jar/lwjgl_util.jar')
+    compile files('libs/slick-util.jar')
 }

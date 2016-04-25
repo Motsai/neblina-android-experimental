@@ -1,4 +1,4 @@
-package openGLClasses;
+package openGL2Classes;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;

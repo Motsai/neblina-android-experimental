@@ -1,4 +1,4 @@
-package openGLClasses;
+package openGL2Classes;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
