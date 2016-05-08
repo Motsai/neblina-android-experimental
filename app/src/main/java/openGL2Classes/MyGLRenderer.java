@@ -1,5 +1,6 @@
 package openGL2Classes;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -14,6 +15,17 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by scott on 2016-02-22.
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
+
+    private Context mActivityContext = null;
+
+
+    public MyGLRenderer(final Context activityContext) {
+        super();
+        mActivityContext = activityContext;
+    }
+
+    private Triangle[] triangles = new Triangle[1];
+    private OBJLoader loader = new OBJLoader(mActivityContext);
 
     //The 12 Rectangles of our cube
     private Triangle mTriangle1;
@@ -42,18 +54,30 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //These three lines make the closest shapes appear on top (as is logical)
         GLES20.glClearDepthf(1.0f);
         GLES20.glDepthFunc(GLES20.GL_LESS);
+//        GLES20.glEnable(GLES20.GL_CULL_FACE); //Removes back facing triangles -> take off when using transparent objects
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
+//        mProgramHandle = ShaderHelper.createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
+//                new String[] {"a_Position",  "a_Color", "a_Normal", "a_TexCoordinate"});
+//
+//        mTextureDataHandle = Triangle.loadTexture(this, R.mipmap.square_texture);
+
+        //TODO: Modify the triangle code to accept normals
+        //TODO: Load objects from .obj file using the OBJLoader
+        triangles = loader.loadObjModel("stall");
+        //TODO: For each face in the OBJ, draw a Triangle, assign it a default white color to begin with
+        //TODO: Load textures into code
+        //TODO: Apply textures
         //Define the 12 triangles of our cube
         //Front Face - Android Green
-        mTriangle1 = new Triangle(
+        mTriangle1 = new Triangle(mActivityContext,
                 -0.5f,   0.5f,   0.5f,
                 -0.5f,   0.5f,  -0.5f,
                 0.5f,    0.5f,  0.5f,
                 0.63671875f, 0.76953125f, 0.22265625f, 1.0f
         );
 
-        mTriangle2 = new Triangle(
+        mTriangle2 = new Triangle(mActivityContext,
                 0.5f, 0.5f, 0.5f,
                 -0.5f, 0.5f, -0.5f,
                 0.5f, 0.5f, -0.5f,
@@ -61,14 +85,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         //Bottom Face - Light Blue
-        mTriangle3 = new Triangle(
+        mTriangle3 = new Triangle(mActivityContext,
                 -0.5f, -0.5f, -0.5f,
                 -0.5f, 0.5f, -0.5f,
                 0.5f, -0.5f, -0.5f,
                 0.3333f, 0.3333f, 1.0f, 1.0f
         );
 
-        mTriangle4 = new Triangle(
+        mTriangle4 = new Triangle(mActivityContext,
                 -0.5f, 0.5f, -0.5f,
                 0.5f, 0.5f, -0.5f,
                 0.5f, -0.5f, -0.5f,
@@ -76,14 +100,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         //Left Face - Gold
-        mTriangle5 = new Triangle(
+        mTriangle5 = new Triangle(mActivityContext,
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, 0.5f,  0.5f,
                 -0.5f, -0.5f, -0.5f,
                 1.0f, 0.6666f, 0.0f, 1.0f
         );
 
-        mTriangle6 = new Triangle(
+        mTriangle6 = new Triangle(mActivityContext,
                 -0.5f, 0.5f, 0.5f,
                 -0.5f, 0.5f, -0.5f,
                 -0.5f, -0.5f, -0.5f,
@@ -91,14 +115,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         //Right Face - Red
-        mTriangle7 = new Triangle(
+        mTriangle7 = new Triangle(mActivityContext,
                 0.5f, -0.5f, 0.5f,
                 0.5f, 0.5f, 0.5f,
                 0.5f, 0.5f, -0.5f,
                 0.6666f, 0.0f, 0.0f, 1.0f
         );
 
-        mTriangle8 = new Triangle(
+        mTriangle8 = new Triangle(mActivityContext,
                 0.5f, -0.5f, 0.5f,
                 0.5f, -0.5f, -0.5f,
                 0.5f, 0.5f, -0.5f,
@@ -106,14 +130,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         //Back Face - Dark Blue
-        mTriangle9 = new Triangle(
+        mTriangle9 = new Triangle(mActivityContext,
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, -0.5f, -0.5f,
                 0.5f, -0.5f, 0.5f,
                 0.0f, 0.0f, 0.6666f, 1.0f
         );
 
-        mTriangle10 = new Triangle(
+        mTriangle10 = new Triangle(mActivityContext,
                 0.5f, -0.5f, 0.5f,
                 -0.5f, -0.5f, -0.5f,
                 0.5f, -0.5f, -0.5f,
@@ -121,7 +145,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         //Top Face - Teal
-        mTriangle11 = new Triangle(
+        mTriangle11 = new Triangle(mActivityContext,
                 -0.5f, -0.5f, 0.5f,
                 -0.5f, 0.5f, 0.5f,
                 0.5f, 0.5f, 0.5f,
@@ -129,7 +153,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
 
-        mTriangle12 = new Triangle(
+        mTriangle12 = new Triangle(mActivityContext,
                   0.0f, -0.5f, 0.5f,
                   0.25f,-0.25f,0.5f,
                   -0.25f,-0.25f,0.5f,

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+//This acts only as a splash screen while the BLE activity loads
 public class MainActivity extends AppCompatActivity {
 
     @Override

@@ -13,7 +13,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     public MyGLSurfaceView(Context context){
         super(context);
         setEGLContextClientVersion(2); //So says stack overflow article
-        mRenderer = new MyGLRenderer();
+        mRenderer = new MyGLRenderer(this.getContext());
         setRenderer(mRenderer);
     }
 }
