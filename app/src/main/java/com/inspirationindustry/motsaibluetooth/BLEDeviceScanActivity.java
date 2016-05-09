@@ -37,6 +37,8 @@ public class BLEDeviceScanActivity extends ListActivity {
     public static float latest_Q2 = 0.0f;
     public static float latest_Q3 = 0.0f;
 
+    long timestamp_N =0;
+
     private static final int REQUEST_ENABLE_BT = 0;
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler;
@@ -333,12 +335,20 @@ public class BLEDeviceScanActivity extends ListActivity {
             latest_Q2 = normalizedQ(q2);
             latest_Q3 = normalizedQ(q3);
 
+
+
+
+
             if((periodic_print%100)==0) {
                 if(debug_mode1==true) {
                     Log.w("BLUETOOTH DEBUG", "Q0: " + latest_Q0);
                     Log.w("BLUETOOTH DEBUG", "Q1: " + latest_Q1);
                     Log.w("BLUETOOTH DEBUG", "Q2: " + latest_Q2);
                     Log.w("BLUETOOTH DEBUG", "Q3: " + latest_Q3);
+
+                    //TODO: Timestamp prints out as a compliment... so it appears to count down... I should fix this eventually
+                    timestamp_N = (timestamp[3]&0xff)<<24 | (timestamp[2]&0xff)<<16 | (timestamp[1]&0xff)<<8 | (timestamp[0]&0xff)<<0;
+                    Log.w("BLUETOOTH DEBUG",Long.toString(timestamp_N));
                 }
             }
             sendBroadcast(intent);
